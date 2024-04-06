@@ -1,6 +1,8 @@
 package models
 
 import (
+	"os"
+
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -8,7 +10,7 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-	dsn := "host=localhost user=postgres password=12345 dbname=ticketing_test port=5432 sslmode=disable"
+	dsn := os.Getenv("DB")
 	database, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic(err)
@@ -18,6 +20,7 @@ func ConnectDatabase() {
 	database.AutoMigrate(&Cinema{})
 	database.AutoMigrate(&CinemaScreen{})
 	database.AutoMigrate(&Movie{})
+	database.AutoMigrate(&User{})
 
 	DB = database
 }
