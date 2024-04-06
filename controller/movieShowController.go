@@ -18,7 +18,7 @@ func (ms *MovieShowController) Index(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"Movies": movieShows})
+	c.JSON(http.StatusOK, gin.H{"Movie Shows": movieShows})
 
 }
 
@@ -38,7 +38,7 @@ func (ms *MovieShowController) Show(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, gin.H{"Movie": movieShow})
+	c.JSON(http.StatusOK, gin.H{"Movie Show": movieShow})
 }
 
 func (ms *MovieShowController) Create(c *gin.Context) {
@@ -51,18 +51,25 @@ func (ms *MovieShowController) Create(c *gin.Context) {
 	}
 
 	var cinemaScreen models.CinemaScreen
-	if err := models.DB.Preload("City").First(&cinemaScreen, movieShow.CinemaScreenID).Error; err != nil {
+	if err := models.DB.Preload("Cinema").Preload("Cinema.City").First(&cinemaScreen, movieShow.CinemaScreenID).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Cinema not found"})
 		return
 	}
-
 	movieShow.CinemaScreen = cinemaScreen
+
+	var movie models.Movie
+	if err := models.DB.First(&movie, movieShow.MovieID).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Movie not found"})
+		return
+	}
+	movieShow.Movie = movie
+
 	if err := models.DB.Create(&movieShow).Error; err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"Movie": movieShow})
+	c.JSON(http.StatusOK, gin.H{"Movie Show": movieShow})
 
 }
 
@@ -77,8 +84,14 @@ func (ms *MovieShowController) Update(c *gin.Context) {
 	}
 
 	var cinemaScreen models.CinemaScreen
-	if err := models.DB.Preload("City").First(&cinemaScreen, movieShow.CinemaScreenID).Error; err != nil {
-		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Cinema screen not found"})
+	if err := models.DB.Preload("Cinema").Preload("Cinema.City").First(&cinemaScreen, movieShow.CinemaScreenID).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Cinema not found"})
+		return
+	}
+
+	var movie models.Movie
+	if err := models.DB.First(&movie, movieShow.MovieID).Error; err != nil {
+		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{"message": "Movie not found"})
 		return
 	}
 
