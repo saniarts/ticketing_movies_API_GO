@@ -1,0 +1,5 @@
+Berikut solusi-solusi yang dapat dilakukan agar sistem pemilihan tempat duduk tetap dapat diakses oles banyak orang dengan performa kinerja sistem yang optimal, bahkan saat ada lonjakan pengguna :
+- **Caching Data** : Menyimpan data kursi yang tersedia dalam cache untuk jangka waktu tertentu dan diperbarui secara berkala sehingga dapat mengurangi waktu pemrosesan saat pelanggan memilih kursi. 
+- **Optimized Database Structure** :  Struktur database harus didesain secara optimal dengan pengindeksan yang baik dan pemilihan jenis database yang tepat  untuk mempercepat pencarian dan pembaruan data kursi yang tersedia.
+- **Asynchronous Processing** : Menggunakan teknik ini untuk memungkinkan pelanggan melakukan transaksi tanpa harus menunggu proses pemesanan kursi selesai sehingga sistem dapat menangani banyak permintaan secara bersamaan tanpa membebani server.
+- **Parallel Processing**: Menggunakan teknik ini untuk memproses beberapa permintaan pemilihan kursi secara bersamaan dengan membagi tugas 
