@@ -20,6 +20,7 @@ func ConnectDatabase() {
 	database.AutoMigrate(&Cinema{})
 	database.AutoMigrate(&CinemaScreen{})
 	database.AutoMigrate(&Movie{})
+	database.AutoMigrate(&MovieShow{})
 	database.AutoMigrate(&User{})
 
 	DB = database
